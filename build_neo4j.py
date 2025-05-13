@@ -1,6 +1,5 @@
 from neo4j import GraphDatabase, RoutingControl
 
-
 def delete_all(driver):
     driver.execute_query('MATCH (n) DETACH DELETE n')  # 删除数据库中所有数据
 
@@ -32,7 +31,7 @@ def query_information(start_label_name, start_name, konws, person):
 
 
 if __name__ == '__main__':
-    uri = 'bolt://172.168.110.15:7687'
+    uri = 'bolt://127.0.0.1:7687'
     auth = ('neo4j', '123456789')
     driver = GraphDatabase.driver(uri, auth=auth)
     delete_all(driver)  # 删除数据库中所有数据
@@ -44,5 +43,6 @@ if __name__ == '__main__':
     records = query_information('person', 'Arthur', 'knows', 'person')
     for record in records:
         print(record)
+        print(record['end_label.name'])
         # print(record['end_label.name'])
         print('~~'*50)

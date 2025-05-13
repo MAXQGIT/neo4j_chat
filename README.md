@@ -8,6 +8,16 @@ jdk下载网址：
 
 https://www.oracle.com/cn/java/technologies/downloads/archive/
 
+windows安装教程
+
+官网下载neo4j 5.8.0版本，jdk下载JAVA SE 17
+
+在电脑环境变量配置JDK环境变量，cmd输入java --version看弹出来信息。
+
+解压neo4j压缩包，在电脑环境变量配置环境变量，cmd输入neo4j console等待出现started。
+
+linux安装教程
+
 查看当前java版本 java –version
 
 卸载 sudo apt remove openjdk-11-*
