@@ -25,11 +25,18 @@ def create_relastion(driver, start_label_name, start_name, relation, end_label_n
     driver.execute_query(query, start_name=start_name, end_name=end_name)
 
 
-def query_information(start_label_name, start_name, konws, person):
-    query = 'MATCH (start_label:%s)-[r:%s]->(end_label:%s) where start_label.name =$start_name  RETURN end_label.name' % (
-        start_label_name, konws, person)
-    records, _, _ = driver.execute_query(query, start_name=start_name, database_="neo4j", routing_=RoutingControl.READ)
+def query_information(label_name, relationship, name,start_name,):
+    query = 'MATCH (start_label:%s)-[r:%s]->(end_label:%s) where end_label.name ="%s"  RETURN start_label.name' % (
+        label_name, relationship, name,start_name)
+    records, _, _ = driver.execute_query(query, database_="neo4j", routing_=RoutingControl.READ)
     return records
+
+
+def save_text(data,name):
+    with open('data/{}.txt'.format(name),'w',encoding='gbk') as w:
+        for word in data[name]:
+            w.write(str(word))
+            w.write('\n')
 
 
 if __name__ == '__main__':
@@ -40,18 +47,20 @@ if __name__ == '__main__':
     data = pd.read_excel('yewu.xlsx')
     print(data)
     for name,money,yewu,contact in zip(data['name'],data['money'],data['yewu'],data['contact']):
-        create_code_relastion(driver,'业务名称',name,'套餐','套餐名称',yewu,contact)
-        create_code_relastion(driver, '套餐名称', yewu,'费用','价格',money,'无')
+        create_code_relastion(driver,'公司',name,'套餐','套餐名称',yewu,contact)
+        create_code_relastion(driver, '套餐名称', yewu,'费用','价格',str(money),'无')
         # create_code_relastion(driver, '套餐名称', yewu, '内容', '套餐内容', contact)
+    for name in data.columns:
+        save_text(data,name)
 
     # for name in ["Guinevere", "Lancelot", "Merlin"]:
     #     create_code_relastion(driver, 'person', 'Arthur',
     #                           'knows', 'person', name)
     # create_relastion(driver, 'person', 'Guinevere',
     #                  'like', 'person', 'Lancelot')
-    # records = query_information('person', 'Arthur', 'knows', 'person')
-    # for record in records:
-    #     print(record)
-    #     print(record['end_label.name'])
-    #     # print(record['end_label.name'])
-    #     print('~~'*50)
+    records = query_information('套餐名称', '费用', '价格',500)
+    for record in records:
+        print(record)
+        print(record['start_label.name'])
+        # print(record['end_label.name'])
+        print('~~'*50)

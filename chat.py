@@ -1,6 +1,6 @@
 from question_classifer import *
 from question_parser import *
-from ansewr import *
+from answer import *
 
 class ChatBotGraph:
     def __init__(self):
@@ -22,8 +22,7 @@ class ChatBotGraph:
 
 if __name__ == '__main__':
     handler = ChatBotGraph()
-    while 1:
-        question = input('咨询:')
-        answer = handler.chat_main(question)
-        print( answer)
-        #'客服机器人:',
+
+    question = '包年不限宽带多少钱'#input('咨询:')
+    answer = handler.chat_main(question)
+    print(answer)

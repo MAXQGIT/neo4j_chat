@@ -1,4 +1,4 @@
-本项目是使用neo4j库构建的。只修改了neo4j数据构建的代码。问答代码没来得及修改，py2neo库21年就停止更新。
+本项目是使用neo4j库构建的。构建sql可以考虑使用智能体的词嵌入模型从构建的问题库中搜索，效果可能比使用ahocorasick效果更好。有兴趣同学可以研究一下。
 
 Neo4j下载网址：
 
@@ -46,7 +46,7 @@ tar -axvf neo4j安装包
 
 如果无法正常启动需要修改neo4j配置文件
 
-Bolt连接和http连接 
+Bolt连接和http连接
 
 neo4j.conf配置文件修改成下面
 
@@ -65,6 +65,5 @@ server.bolt.listen_address=0.0.0.0:7687
 server.http.enabled=true
 
 server.http.listen_address=0.0.0.0:7474
-
 
 连接后默认账户和密码都是neo4j,会让自己修改密码（一定要记着修改后密码）

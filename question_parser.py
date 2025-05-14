@@ -13,19 +13,21 @@ class QuestionPaser:
     def sql_transfer(self, question_type, entities):
         sql = []
         if question_type == 'name_yewu':
-            sql = ["MATCH (m:name)-[r:name_yewu]->(n:yewu) where m.name = '{0}' return m.name,r.name,n.name".format(i)
-                   for i in entities]
+            sql = [
+                "MATCH (start_label:公司)-[r:套餐]->(end_label:套餐名称) where start_label.name = '{0}' return start_label.name,r.name,end_label.name".format(
+                    i) for i in entities]
         if question_type == 'money_yewu':
-            sql = ["MATCH (m:yewu)-[r:money_yewu]->(n:money) where m.name='{0}' return m.name,r.name,n.name".format(i)
-                   for i in entities]
+            sql = [
+                "MATCH (start_label:套餐名称)-[r:费用]->(end_label:价格) where end_label.name='{0}' return start_label.name,r.name,end_label.name".format(
+                    i) for i in entities]
         if question_type == 'yewu_contact':
             sql = [
-                "MATCH (m:yewu)-[r:yewu_contact]->(n:contact) where m.name='{0}' return m.name,r.name,n.name".format(i)
-                for i in entities]
-        if question_type =='yewu_money':
+                "MATCH (start_label:套餐名称) where start_label.name='{0}' return start_label".format(i) for i in
+                entities]
+        if question_type == 'yewu_money':
             sql = [
-                "MATCH (m:yewu)-[r:money_yewu]->(n:money) where n.name='{0}' return m.name,r.name,n.name".format(i)
-                for i in entities]
+                "MATCH (start_label:套餐名称)-[r:费用]->(end_label:价格) where start_label.name='{0}' return start_label.name,r.name,end_label.name".format(
+                    i) for i in entities]
 
         return sql
 
@@ -44,12 +46,11 @@ class QuestionPaser:
             if question_type == 'name_yewu':
                 sql = self.sql_transfer(question_type, entity_dict.get('name'))
             if question_type == 'money_yewu':
-                sql = self.sql_transfer(question_type, entity_dict.get('yewu'))
-            if question_type =='yewu_contact':
-                sql = self.sql_transfer(question_type,entity_dict.get('yewu'))
-            if question_type=='yewu_money':
                 sql = self.sql_transfer(question_type, entity_dict.get('money'))
-
+            if question_type == 'yewu_contact':
+                sql = self.sql_transfer(question_type, entity_dict.get('yewu'))
+            if question_type == 'yewu_money':
+                sql = self.sql_transfer(question_type, entity_dict.get('yewu'))
 
             if sql:
                 sql_['sql'] = sql

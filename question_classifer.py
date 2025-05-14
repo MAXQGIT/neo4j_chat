@@ -1,6 +1,7 @@
-from build_neo4j import MedicalGraph
 import ahocorasick
 
+
+# pip install pyahocorasick
 
 class QuestionClassifier():
 
@@ -10,11 +11,11 @@ class QuestionClassifier():
         self.yewus = [i.strip() for i in open('data/yewu.txt')]
         self.contacts = [i.strip() for i in open('data/contact.txt')]
         self.words = set(self.names + self.moneys + self.yewus + self.contacts)
-        #可是考虑加入pypinyin 和相似词模型
+        # 可是考虑加入pypinyin 和相似词模型，词嵌入模型也可以考虑
         self.yewu_words = ['业务', '套餐']
-        self.money_words= ['钱', '多贵', '多少钱', '几元','价格']
-        self.contact_words = ['内容', '包含', '都有','包括']
-        self.banli_words = ['办理','购买','买','办']
+        self.money_words = ['钱', '多贵', '多少钱', '几元', '价格']
+        self.contact_words = ['内容', '包含', '都有', '包括']
+        self.banli_words = ['办理', '购买', '买', '办']
 
     def build_actree(self, word):
         actree = ahocorasick.Automaton()
@@ -77,7 +78,7 @@ class QuestionClassifier():
 
         # 业务多少钱
         if self.check_words(self.money_words, question) and ('yewu' in types):
-            question_type = 'money_yewu'
+            question_type = 'yewu_money'
             question_types.append(question_type)
 
         # 套餐内容
@@ -85,9 +86,9 @@ class QuestionClassifier():
             question_type = 'yewu_contact'
             question_types.append(question_type)
 
-        #业务办理
-        if self.check_words(self.banli_words,question) and ('money' in types):
-            question_type = 'yewu_money'
+        # 业务办理
+        if self.check_words(self.banli_words, question) and ('money' in types):
+            question_type = 'money_yewu'
             question_types.append(question_type)
 
         data['question_type'] = question_types
